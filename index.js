@@ -1,6 +1,7 @@
 'use strict';
 const assert = require('assert');
 
+const merge = require('merge-descriptors');
 const mongodb = require('mongodb');
 const manageable = require('manageable');
 
@@ -34,7 +35,7 @@ function createMongoDbDataMapper(options) {
     yield db.close();
   };
 
-  const mapper = Object.assign(
+  const mapper = merge(
     {
       *find(opts) {
         const documents = yield queryAsCursor(opts, collection)
