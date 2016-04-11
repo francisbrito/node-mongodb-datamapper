@@ -10,16 +10,18 @@ const IDENTITY_FUNCTION = d => d;
 /**
  * Creates a MongoDb Data Mapper.
  * @param   {Object}    options
- * @param   {Function}  [transform]     A Transformation function to be applied to documents.
- * @param   {String}    connectionUri   A MongoDb connection string.
- * @param   {String}    collectionName  Name of the collection to operate with.
- * @return  {Object}    An object implementing the data mapper interface.
+ * @param   {Object}    [options.driver]        A MongoDb driver.
+ * @param   {Function}  [options.transform]     A transformation function to be applied to docs.
+ * @param   {String}    options.connectionUri   A MongoDb connection string.
+ * @param   {String}    options.collectionName  Name of the collection to operate with.
+ * @return  {Object} An object implementing the data mapper interface.
  */
 function createMongoDbDataMapper(options) {
   assert(options, '`options` is missing.');
   assert(options.connectionUri, '`options.connectionUri` is missing.');
   assert(options.collectionName, '`options.collectionName` is missing.');
 
+  const driver = options.driver || mongodb;
   const transform = options.transform || IDENTITY_FUNCTION;
   const connectionUri = options.connectionUri;
   const collectionName = options.collectionName;
@@ -28,7 +30,7 @@ function createMongoDbDataMapper(options) {
   let collection;
 
   const openConnection = function* () {
-    db = yield mongodb.MongoClient.connect(connectionUri);
+    db = yield driver.MongoClient.connect(connectionUri);
     collection = db.collection(collectionName);
   };
   const closeConnection = function* () {
