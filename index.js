@@ -61,7 +61,7 @@ function createMongoDbDataMapper(options) {
         return transform(result.value);
       },
     },
-    manageable({ destroy: closeConnection(db), initialize: openConnection(db) })
+    manageable({ destroy: closeConnection, initialize: openConnection })
   );
 
   return mapper;
