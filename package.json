@@ -1,0 +1,24 @@
+{
+  "name": "mongodb-datamapper",
+  "version": "0.0.1",
+  "description": "A MongoDb Data-Mapper implementation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests.js"
+  },
+  "keywords": [
+    "mongodb",
+    "data",
+    "mapper"
+  ],
+  "author": "Francis Brito <fr.br94@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "manageable": "0.0.1",
+    "mongodb": "^2.1.16"
+  },
+  "devDependencies": {
+    "blue-tape": "^0.2.0",
+    "co": "^4.6.0"
+  }
+}
