@@ -35,8 +35,7 @@ test('factory should throw if required parameters are missing', coroutine.wrap(f
 test('mapper can be initialized', coroutine.wrap(function* (t) {
   const expectedConnectionUri = CONNECTION_URI;
   const expectedCollectionName = COLLECTION_NAME;
-  const dbMock = createDbMock();
-  const driverMock = createDriverMock(dbMock);
+  const driverMock = createDriverMock();
   const subject = mongoDataMapper({
     driver: driverMock,
     connectionUri: expectedConnectionUri,
@@ -59,13 +58,18 @@ test('mapper can be initialized', coroutine.wrap(function* (t) {
 }));
 
 test('mapper can be destroyed', coroutine.wrap(function* (t) {
+  const dbMock = createDbMock();
+  const driverMock = createDriverMock(dbMock);
   const subject = mongoDataMapper({
-    connectionUri: 'mongodb://localhost/test',
-    collectionName: 'docs',
+    driver: driverMock,
+    connectionUri: CONNECTION_URI,
+    collectionName: COLLECTION_NAME,
   });
 
   yield subject.initialize();
   yield subject.destroy();
+
+  t.ok(dbMock.close.called, 'should have closed db.');
 
   t.notOk(subject.initialized, 'should have been destroyed.');
 }));
@@ -88,7 +92,7 @@ function createDriverMock(dbMock) {
     },
   };
 
-  driverMock.MongoClient.connect.mock(Promise.resolve(dbMock));
+  driverMock.MongoClient.connect.mock(Promise.resolve(dbMock || createDbMock()));
 
   return driverMock;
 }
