@@ -1,4 +1,6 @@
 'use strict';
+const assert = require('assert');
+
 const mongodb = require('mongodb');
 const manageable = require('manageable');
 
@@ -13,6 +15,8 @@ const IDENTITY_FUNCTION = d => d;
  * @return  {Object}    An object implementing the data mapper interface.
  */
 function createMongoDbDataMapper(options) {
+  assert(options, '`options` is missing.');
+
   const transform = options.transform || IDENTITY_FUNCTION;
   const connectionUri = options.connectionUri;
   const collectionName = options.connectionName;
