@@ -7,6 +7,9 @@ const coroutine = require('co');
 
 const mongoDataMapper = require('./');
 
+const CONNECTION_URI = 'mongodb://localhost/test';
+const COLLECTION_NAME = 'docs';
+
 test('factory should throw if required parameters are missing', coroutine.wrap(function* (t) {
   t.throws(
     () => mongoDataMapper(),
@@ -30,21 +33,12 @@ test('factory should throw if required parameters are missing', coroutine.wrap(f
 }));
 
 test('mapper can be initialized', coroutine.wrap(function* (t) {
-  const expectedConnectionUri = 'mongodb://localhost/test';
-  const expectedCollectionName = 'docs';
-  const mockDb = {
-    close: spy(),
-    collection: spy(),
-  };
-  mockDb.close.mock(Promise.resolve());
-  const mockDriver = {
-    MongoClient: {
-      connect: spy(),
-    },
-  };
-  mockDriver.MongoClient.connect.mock(Promise.resolve(mockDb));
+  const expectedConnectionUri = CONNECTION_URI;
+  const expectedCollectionName = COLLECTION_NAME;
+  const dbMock = createDbMock();
+  const driverMock = createDriverMock(dbMock);
   const subject = mongoDataMapper({
-    driver: mockDriver,
+    driver: driverMock,
     connectionUri: expectedConnectionUri,
     collectionName: expectedCollectionName,
   });
@@ -54,8 +48,8 @@ test('mapper can be initialized', coroutine.wrap(function* (t) {
   yield subject.initialize();
 
   t.ok(
-    mockDriver.MongoClient.connect.called &&
-    mockDriver.MongoClient.connect.calledWith(expectedConnectionUri),
+    driverMock.MongoClient.connect.called &&
+    driverMock.MongoClient.connect.calledWith(expectedConnectionUri),
     'should have connected to db.'
   );
 
@@ -75,3 +69,26 @@ test('mapper can be destroyed', coroutine.wrap(function* (t) {
 
   t.notOk(subject.initialized, 'should have been destroyed.');
 }));
+
+function createDbMock() {
+  const dbMock = {
+    close: spy(),
+    collection: spy(),
+  };
+
+  dbMock.close.mock(Promise.resolve());
+
+  return dbMock;
+}
+
+function createDriverMock(dbMock) {
+  const driverMock = {
+    MongoClient: {
+      connect: spy(),
+    },
+  };
+
+  driverMock.MongoClient.connect.mock(Promise.resolve(dbMock));
+
+  return driverMock;
+}
