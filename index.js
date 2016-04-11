@@ -16,10 +16,12 @@ const IDENTITY_FUNCTION = d => d;
  */
 function createMongoDbDataMapper(options) {
   assert(options, '`options` is missing.');
+  assert(options.connectionUri, '`options.connectionUri` is missing.');
+  assert(options.collectionName, '`options.collectionName` is missing.');
 
   const transform = options.transform || IDENTITY_FUNCTION;
   const connectionUri = options.connectionUri;
-  const collectionName = options.connectionName;
+  const collectionName = options.collectionName;
 
   let db;
   let collection;
