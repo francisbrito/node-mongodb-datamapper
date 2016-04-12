@@ -1,4 +1,5 @@
 # MongoDb Data Mapper [![Build Status](https://travis-ci.org/francisbrito/node-mongodb-datamapper.svg?branch=master)](https://travis-ci.org/francisbrito/node-mongodb-datamapper) [![npm version](https://badge.fury.io/js/mongodb-datamapper.svg)](https://badge.fury.io/js/mongodb-datamapper)
+> A minimalist MongoDb data-mapper for Node.js
 
 # What ?
 A data mapper is an abstraction on top of a persistence mechanism. It works as a bridge between domain entities and a data store.
