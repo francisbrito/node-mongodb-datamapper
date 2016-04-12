@@ -47,7 +47,7 @@ coroutine(function* () {
   yield studentsDataMapper.initialize();
 
   const allStudents = yield studentsDataMapper.find();
-  const studentsWithHighScores = allStudents.map(s => s.averageScore > 90);
+  const studentsWithHighScores = allStudents.filter(s => s.averageScore > 90);
 
   studentsWithHighScores.forEach(s => {
     s.showOffGoldenStars(); // Assume `student#showOffGoldenStars`
