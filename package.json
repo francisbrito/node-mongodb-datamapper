@@ -27,5 +27,13 @@
     "eslint-config-airbnb": "^6.2.0",
     "eslint-plugin-react": "^4.3.0",
     "spy": "^0.1.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/francisbrito/node-mongodb-datamapper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/francisbrito/node-mongodb-datamapper/issues"
+  },
+  "homepage": "https://github.com/francisbrito/node-mongodb-datamapper#readme"
 }
