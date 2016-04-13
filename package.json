@@ -10,7 +10,9 @@
   "keywords": [
     "mongodb",
     "data",
-    "mapper"
+    "mapper",
+    "orm",
+    "testable"
   ],
   "author": "Francis Brito <fr.br94@gmail.com>",
   "license": "ISC",
